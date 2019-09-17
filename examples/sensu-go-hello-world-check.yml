@@ -1,0 +1,15 @@
+type: CheckConfig
+api_version: core/v2
+metadata:
+  name: sensu-go-hello-world
+  namespace: default
+spec:
+  command: hello-world.sh
+  runtime_assets:
+  - sensu-go-hello-world-asset
+  interval: 10
+  publish: true
+  handlers:
+    - debug
+  subscriptions:
+  - linux

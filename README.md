@@ -46,7 +46,44 @@ Ok, this is a great start. We've got our script in the `/bin` dir, it's executab
 
 ## Packaging the asset
 
-Assets are tarballs, pure and simple. So how can we tar up our asset? 
+Assets are tarballs, pure and simple. So how can we tar up our asset? First, let's tar up our directory. This assumes you're in the directory you want to tar up:
+
+```bash
+$ cd ..
+$ tar -C sensu-go-hello-world -cvzf sensu-go-hello-world-0.0.1.tar.gz .
+...
+```
+
+Excellent. We've got an archive. 
+
+Now, let's generate a SHA512 sum for it (this is required, else the asset won't work)
+
+```bash
+sha512sum sensu-go-hello-world-0.0.1.tar.gz | tee sha512sum.txt
+dbfd4a714c0c51c57f77daeb62f4a21141665ae71440951399be2d899bf44b3634dad2e6f2516fff1ef4b154c198b9c7cdfe1e8867788c820db7bb5bcad83827 sensu-go-hello-world-0.0.1.tar.gz
+```
+
+Awesome. Now we have our sha512sum. The last part of this portion of our exercise is getting the archive and the sha512sum somewhere where it can be hosted. You can do this with S3, a Github release, or even just serving the files out of a directory using Nginx/Apache.
+
+In this case, we're going to use Github to serve our release.
+
+
+## Generating the definitions
+
+So far, we've created a directory for our asset with our script present in `/bin`, we've packaged up the asset and generated a checksum for it, we've got it hosted at XXXXXXXXX, now it's time to generate some definitions for it to see it work. So let's start with our asset definition:
+
+```yaml
+---
+type: Asset
+api_version: core/v2
+metadata:
+  name: sensu-go-hello-world
+  namespace: default
+spec:
+  url: https://github.com/asachs01/sensu-go-hello-world/releases/download/0.0.1/sensu-go-hello-world-0.0.1.tar.gz
+  sha512: dbfd4a714c0c51c57f77daeb62f4a21141665ae71440951399be2d899bf44b3634dad2e6f2516fff1ef4b154c198b9c7cdfe1e8867788c820db7bb5bcad83827
+```
+
 
 <!--LINKS-->
 [asset-ref]: https://docs.sensu.io/sensu-go/latest/reference/assets/
