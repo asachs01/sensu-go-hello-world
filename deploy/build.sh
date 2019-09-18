@@ -12,7 +12,7 @@ ARCHIVE="${RELEASE}.tar.gz"
 
 rm -rf dist
 mkdir -p dist
-tar -C sensu-go-hello-world -c {bin,README.md} > "dist/${ARCHIVE}"
+tar -c {bin,README.md} > "dist/${ARCHIVE}"
 cd dist || exit
 
 sha512sum "${ARCHIVE}" > "${CHECKSUM_TXT}"
