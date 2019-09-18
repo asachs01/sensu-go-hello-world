@@ -4,6 +4,6 @@ builds:
 - platform: "linux"
   arch: "any"
   asset_filename: "#{repo}-#{version}.tar.gz"
-  sha_filename: "#{repo}-#{version}-sha512-checksums.txt"
+  sha_filename: "#{repo}-#{version}_sha512-checksums.txt"
   filter:
   -  "entity.system.os == 'linux'"
