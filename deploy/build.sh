@@ -6,7 +6,7 @@ else
     VER=$(git rev-parse --short HEAD)
 fi
 
-RELEASE="sensu-go-hello-world${VER}"
+RELEASE="sensu-go-hello-world-${VER}"
 CHECKSUM_TXT="${RELEASE}_sha512-checksums.txt"
 ARCHIVE="${RELEASE}.tar.gz"
 
