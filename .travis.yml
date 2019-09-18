@@ -1,4 +1,5 @@
 dist: trusty
+language: generic
 deploy:
   - provider: script
     script: deploy/build.sh
