@@ -1,0 +1,8 @@
+dist: trusty
+deploy:
+  - provider: script
+    script: deploy/build.sh
+    skip_cleanup: true
+    on:
+      tags: true
+      branch: master
