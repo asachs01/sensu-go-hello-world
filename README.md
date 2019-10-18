@@ -140,6 +140,6 @@ There you have it! You've successfully created an asset from a script, uploaded 
 [asset-ref]: https://docs.sensu.io/sensu-go/latest/reference/assets/
 [gh-release-01]: http://share.sachshaus.net/4efc554512f9/%255Bee92b1343de6399b8191fee8b8dd2c57%255D_Image%2525202019-09-17%252520at%25252010.32.02%252520AM.png
 [gh-release-02]: http://share.sachshaus.net/3485c10bccb0/[9b5ee5dc49432dc104bf8c6830bcf2b7]_Image%202019-09-17%20at%2010.32.43%20AM.png
-[gh-release-03]: http://share.sachshaus.net/2e3e5d97454d/Image%202019-09-17%20at%2011.54.28%20AM.png
-[gh-release-04]: http://share.sachshaus.net/221bef49236a/Image%202019-09-17%20at%2011.57.55%20AM.png
-[sensu-agent-01]: http://share.sachshaus.net/24ef2c7ea8e5/Image%202019-09-17%20at%2012.04.35%20PM.png
+[gh-release-03]: https://f.v1.n0.cdn.getcloudapp.com/items/3a0n0f2z3x08133y3F1v/Image%25202019-09-17%2520at%252011.54.28%2520AM.png
+[gh-release-04]: https://f.v1.n0.cdn.getcloudapp.com/items/2q440A3g0F0E0J3N1A3f/Image%25202019-09-17%2520at%252011.57.55%2520AM.png
+[sensu-agent-01]: https://f.v1.n0.cdn.getcloudapp.com/items/360q0m2b3g0R2J1P1W0p/Image%25202019-09-17%2520at%252012.04.35%2520PM.png
