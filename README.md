@@ -1,18 +1,61 @@
-# Sensu Go Hello World Asset
+[![Sensu Bonsai Asset](https://img.shields.io/badge/Bonsai-Download%20Me-brightgreen.svg?colorB=89C967&logo=sensu)](https://bonsai.sensu.io/assets/asachs01/sensu-go-hello-world)
+[![Build Status](https://travis-ci.org/asachs01/sensu-go-hook-has-process-filter.svg?branch=master)](https://travis-ci.org/asachs01/sensu-go-hello-world)
 
-- [Starting out](#starting-out)
-- [Packaging the asset](#packaging-the-asset)
-- [Generating the definitions](#generating-the-definitions)
+## Sensu Go Hello World Asset
+
+- [Overview](#overview)
+- [Files](#files)
+- [Usage examples](#usage-examples)
+- [Configuration](#configuration)
+  - [Sensu Go](#sensu-go)
+    - [Asset registration](#asset-registration)
+    - [Asset definition](#asset-definition)
+    - [Walkthrough](#walkthrough)
+- [Sensu Core](#sensu-core)
+- [Installation from source](#installation-from-source)
+- [Additional notes](#additional-notes)
+- [Contributing](#contributing)
+
+## Overview
 
 This asset is the "Hello World" of Sensu Go assets. It's designed to give you an idea of how assets are packaged up and used with Sensu Go. 
 
-If you haven't already, you should read the [Sensu Go Asset Reference documentation][asset-ref]. This will go over all the material you'll need to know to understand assets from a theoretical perspective. 
+If you haven't already, read the [Sensu Go asset reference documentation][1], which describes everything you need to know to understand assets from a theoretical perspective.
 
-Assuming you've read that document, we can now start discussing this project.
+## Files
 
-## Starting out
+N/A
 
-So you've got a bash script that you need to run. In our case, we REALLY need to run a script that outputs "Hello World." It looks like this:
+## Usage examples
+
+N/A
+
+## Configuration
+### Sensu Go
+#### Asset registration
+
+Assets are the best way to make use of this plugin. If you're not using an asset, please consider doing so! If you're using sensuctl 5.13 or later, you can use the following command to add the asset: 
+
+`sensuctl asset add asachs01/sensu-go-hello-world`
+
+If you're using an earlier version of sensuctl, you can download the asset definition from [this project's Bonsai asset index page][2].
+
+#### Asset definition
+
+```yaml
+---
+type: Asset
+api_version: core/v2
+metadata:
+  name: sensu-go-hello-world
+spec:
+  url: https://assets.bonsai.sensu.io/71f7d5a07057b018ea7083467b1effc5f55b310c/sensu-go-hello-world-0.0.9.tar.gz
+  sha512: 89f1892cddc0c29ce8254ea458072aefd33cc395946033ca58836bfb6d22aea7df67b86c4f540612ba0cd03f23eeff712b216947a8f953f99fa519202ed9e3a9
+```
+
+#### Walkthrough
+
+Suppose you've got a bash script that you need to run. In this case, you REALLY need to run a script that outputs "Hello World." It looks like this:
 
 ```bash
 #!/bin/sh
@@ -28,9 +71,11 @@ else
 fi
 ```
 
-Sure, it's basic. But it does what we need it to do. So how do we make it a reusable asset for Sensu Go? First we need to put it in the right spot. 
+Sure, it's basic. But it does what you need it to do. So how do you make it a reusable asset for Sensu Go?
 
-According to the reference document, there are three potential directories where our script could live in our project: `/bin`, `/lib`, or `/include`. For this case, we'll just use `/bin` and put our script there:
+First, you need to put it in the right spot. 
+
+According to the reference document, there are three potential directories where your script could live in your project: `/bin`, `/lib`, or `/include`. For this example, let's use `/bin`:
 
 ```
 .
@@ -39,57 +84,59 @@ According to the reference document, there are three potential directories where
     └── hello-world.sh
 ```
 
-Let's make sure that it's marked as executable:
+Make sure that the script is marked as executable:
 
 ```
 $ chmod +x hello-world.sh 
 mode of 'hello-world.sh' changed from 0644 (rw-r--r--) to 0755 (rwxr-xr-x)
 ```
 
-Ok, this is a great start. We've got our script in the `/bin` dir, it's executable...what next?
+Ok, this is a great start. Your script is in the `/bin` dir, and it's executable...what next?
 
-## Packaging the asset
+**Package the asset**
 
-Assets are tarballs, pure and simple. So how can we tar up our asset? First, let's tar up our directory. This assumes you're in the directory you want to tar up:
+Assets are tarballs, pure and simple. So how can you tar up your asset? First, tar up your directory. This assumes you're in the directory you want to tar up:
 
 ```bash
 $ cd ..
-$ tar -C sensu-go-hello-world -cvzf sensu-go-hello-world-0.0.1.tar.gz .
+$ tar -C sensu-go-hello-world -cvzf sensu-go-hello-world-0.0.9.tar.gz .
 ...
 ```
 
-Excellent. We've got an archive. 
+Excellent. You've got an archive. 
 
-Now, let's generate a SHA512 sum for it (this is required, else the asset won't work)
+Now, let's generate a SHA512 sum for it (this is required for the asset to work)
 
 ```bash
-sha512sum sensu-go-hello-world-0.0.1.tar.gz | tee sha512sum.txt
-dbfd4a714c0c51c57f77daeb62f4a21141665ae71440951399be2d899bf44b3634dad2e6f2516fff1ef4b154c198b9c7cdfe1e8867788c820db7bb5bcad83827 sensu-go-hello-world-0.0.1.tar.gz
+sha512sum sensu-go-hello-world-0.0.9.tar.gz | tee sha512sum.txt
+89f1892cddc0c29ce8254ea458072aefd33cc395946033ca58836bfb6d22aea7df67b86c4f540612ba0cd03f23eeff712b216947a8f953f99fa519202ed9e3a9 sensu-go-hello-world-0.0.9.tar.gz
 ```
 
-Awesome. Now we have our sha512sum. The last part of this portion of our exercise is getting the archive and the sha512sum somewhere where it can be hosted. You can do this with S3, a Github release, or even just serving the files out of a directory using Nginx/Apache.
+Awesome. Now you have your sha512sum. The last part of this step is getting the archive and the sha512sum somewhere where it can be hosted. You can do this with S3, a GitHub release, or just serving the files out of a directory using Nginx/Apache.
 
-In this case, we're going to use Github to serve our release. So let's go ahead and create a release. 
+In this example, you'll use GitHub to serve your release. So let's go ahead and create a release. 
 
-![Create a new github release][gh-release-01]
+![Create a new GitHub release][4]
 
-Once you've clicked on "Create a new release," you should see a screen that looks like this:
+After you click "Create a new release," you should see a screen that looks like this:
 
-![Release details screen][gh-release-02]
+![Release details screen][5]
 
-So you can see that there will need to be some details filled out. We'll also need to drag and drop our asset and checksum to the screen so they will be uploaded as part of the release. If you've done all of that, you should see something like this:
+You'll need to fill in these details and drag and drop your asset and checksum to the screen so they will be uploaded as part of the release. If you've done all of that, you should see something like this:
 
-![Release details filled in][gh-release-03]
+![Release details filled in][6]
 
-Once you've done that, you can hit "Publish release" and you should have a release listed that looks like so:
+Next, click "Publish release." Your release should be listed like so:
 
-![Completed release][gh-release-04]
+![Completed release][7]
 
-Alright. Now, time to create some definitions!
+Time to create some definitions!
 
-## Generating the definitions
+**Generate the definitions**
 
-So far, we've created a directory for our asset with our script present in `/bin`, we've packaged up the asset and generated a checksum for it, we've got it hosted at Github, now it's time to generate some definitions for it to see it work. So let's start with our asset definition:
+So far, you've created a directory for your asset with your script present in `/bin`, packaged up the asset and generated a checksum for it, and hosted it on GitHub. Now it's time to generate some definitions to see it work.
+
+Start with your asset definition:
 
 ```yaml
 ---
@@ -99,11 +146,11 @@ metadata:
   name: sensu-go-hello-world
   namespace: default
 spec:
-  url: https://github.com/yourusername/sensu-go-hello-world/releases/download/0.0.1/sensu-go-hello-world-0.0.1.tar.gz
-  sha512: dbfd4a714c0c51c57f77daeb62f4a21141665ae71440951399be2d899bf44b3634dad2e6f2516fff1ef4b154c198b9c7cdfe1e8867788c820db7bb5bcad83827
+  url: https://assets.bonsai.sensu.io/71f7d5a07057b018ea7083467b1effc5f55b310c/sensu-go-hello-world-0.0.9.tar.gz
+  sha512: 89f1892cddc0c29ce8254ea458072aefd33cc395946033ca58836bfb6d22aea7df67b86c4f540612ba0cd03f23eeff712b216947a8f953f99fa519202ed9e3a9
 ```
 
-Now, let's create a basic check that uses the asset:
+Now, create a basic check that uses the asset:
 
 ```yaml
 type: CheckConfig
@@ -123,23 +170,46 @@ spec:
   - linux
 ```
 
-We'll apply both of those definitions to our Sensu Go deployment:
+Apply both of those definitions to your Sensu Go deployment:
 
 ```
 sensuctl create -f sensu-go-hello-world-asset.yml
 sensuctl create -f sensu-go-hello-world-check.yml
 ```
 
-Now, let's take a look in the dashboard to see our check using our asset. In my case, I have an entity named `sensu-agent-01`, and I can see that the check successfully executes:
+Now, let's take a look in the dashboard to see your check using your asset. As an example, we created an entity named `sensu-agent-01`, and you can see that the check successfully executes:
 
-![Sensu go agent successfully executes check with hello world asset][sensu-agent-01]
+![Sensu Go agent successfully executes check with hello world asset][8]
 
-There you have it! You've successfully created an asset from a script, uploaded that to Github as a release, and have created your own definitions that make use of that asset. Congratulations! 🎉🎉🎉🎉
+There you have it! You've successfully created an asset from a script, uploaded it to GitHub as a release, and created your own definitions that make use of that asset. Congratulations! 🎉🎉🎉🎉
 
-<!--LINKS-->
-[asset-ref]: https://docs.sensu.io/sensu-go/latest/reference/assets/
-[gh-release-01]: http://share.sachshaus.net/4efc554512f9/%255Bee92b1343de6399b8191fee8b8dd2c57%255D_Image%2525202019-09-17%252520at%25252010.32.02%252520AM.png
-[gh-release-02]: http://share.sachshaus.net/3485c10bccb0/[9b5ee5dc49432dc104bf8c6830bcf2b7]_Image%202019-09-17%20at%2010.32.43%20AM.png
-[gh-release-03]: https://f.v1.n0.cdn.getcloudapp.com/items/3a0n0f2z3x08133y3F1v/Image%25202019-09-17%2520at%252011.54.28%2520AM.png
-[gh-release-04]: https://f.v1.n0.cdn.getcloudapp.com/items/2q440A3g0F0E0J3N1A3f/Image%25202019-09-17%2520at%252011.57.55%2520AM.png
-[sensu-agent-01]: https://f.v1.n0.cdn.getcloudapp.com/items/360q0m2b3g0R2J1P1W0p/Image%25202019-09-17%2520at%252012.04.35%2520PM.png
+### Sensu Core
+
+N/A
+
+## Installation from source
+
+### Sensu Go
+
+See the instructions above for [asset registration](#asset-registration).
+
+### Sensu Core
+
+Install and setup plugins on [Sensu Core](https://docs.sensu.io/sensu-core/latest/installation/installing-plugins/).
+
+## Additional notes
+
+N/A
+
+## Contributing
+
+See the [Sensu Go repository CONTRIBUTING.md][3] for information about contributing to this plugin. 
+
+[1]: https://docs.sensu.io/sensu-go/latest/reference/assets/
+[2]: https://bonsai.sensu.io/assets/asachs01/sensu-go-hello-world
+[3]: https://github.com/sensu/sensu-go/blob/master/CONTRIBUTING.md
+[4]: http://share.sachshaus.net/4efc554512f9/%255Bee92b1343de6399b8191fee8b8dd2c57%255D_Image%2525202019-09-17%252520at%25252010.32.02%252520AM.png
+[5]: http://share.sachshaus.net/3485c10bccb0/[9b5ee5dc49432dc104bf8c6830bcf2b7]_Image%202019-09-17%20at%2010.32.43%20AM.png
+[6]: https://f.v1.n0.cdn.getcloudapp.com/items/3a0n0f2z3x08133y3F1v/Image%25202019-09-17%2520at%252011.54.28%2520AM.png
+[7]: https://f.v1.n0.cdn.getcloudapp.com/items/2q440A3g0F0E0J3N1A3f/Image%25202019-09-17%2520at%252011.57.55%2520AM.png
+[8]: https://f.v1.n0.cdn.getcloudapp.com/items/360q0m2b3g0R2J1P1W0p/Image%25202019-09-17%2520at%252012.04.35%2520PM.png
